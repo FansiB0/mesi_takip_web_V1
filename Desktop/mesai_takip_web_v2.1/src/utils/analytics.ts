@@ -1,5 +1,7 @@
 // Analytics and monitoring utilities
 
+import { logger } from './logger';
+
 export interface AnalyticsEvent {
   event: string;
   properties?: Record<string, any>;
@@ -131,7 +133,7 @@ class AnalyticsManager {
       try {
         observer.observe({ entryTypes: ['navigation', 'measure'] });
       } catch (e) {
-        console.warn('Performance observer not supported:', e);
+        logger.warn('Performance observer not supported:', e);
       }
     }
 
@@ -331,7 +333,7 @@ class AnalyticsManager {
     
     // In development, just log the data
     if (import.meta.env.DEV) {
-      console.log('Analytics data:', data);
+      logger.debug('Analytics data:', data);
       return;
     }
 

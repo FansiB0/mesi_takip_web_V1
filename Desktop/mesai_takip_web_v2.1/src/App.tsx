@@ -11,6 +11,7 @@ import LoginForm from './components/Auth/LoginForm';
 import RegisterForm from './components/Auth/RegisterForm';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
+import ChatBot from './components/Chat/ChatBot';
 import { useAuth } from './contexts/AuthContext';
 import { useSidebar } from './contexts/SidebarContext';
 import {
@@ -62,6 +63,7 @@ const MainAppContent: React.FC = () => {
   const { user, isLoading } = useAuth();
   const { isCollapsed } = useSidebar();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [chatBotOpen, setChatBotOpen] = useState(false);
 
   // Debug için console log (sadece development'ta)
   logger.debug('MainAppContent render', { user: user?.id, isLoading, activeTab }, 'App');
@@ -149,6 +151,12 @@ const MainAppContent: React.FC = () => {
           {renderActiveComponent()}
         </main>
       </div>
+      
+      {/* ChatBot */}
+      <ChatBot 
+        isOpen={chatBotOpen} 
+        onToggle={() => setChatBotOpen(!chatBotOpen)} 
+      />
     </div>
   );
 };
@@ -165,7 +173,9 @@ function App() {
   // Initialize Nano database
   useEffect(() => {
     try {
-      nanoDatabase.initialize();
+      if (!nanoDatabase.isInitialized) {
+        nanoDatabase.init();
+      }
       logger.info('Nano database initialized successfully', null, 'App');
     } catch (error) {
       logger.error('Failed to initialize Nano database', error, 'App');

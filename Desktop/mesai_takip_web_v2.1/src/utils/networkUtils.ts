@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 // Network utilities for handling connection issues
 
 // Network durumu kontrolü
@@ -22,7 +24,7 @@ export const setupNetworkListeners = (
 // Supabase bağlantı testi
 export const testSupabaseConnection = async (): Promise<boolean> => {
   try {
-    console.log('🔍 Testing Supabase connection...');
+    logger.debug('Testing Supabase connection...');
     
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const response = await fetch(`${supabaseUrl}/rest/v1/`, {
@@ -35,7 +37,7 @@ export const testSupabaseConnection = async (): Promise<boolean> => {
     
     return response.status === 200;
   } catch (error) {
-    console.warn('⚠️ Supabase connection test failed:', error);
+    logger.warn('Supabase connection test failed:', error);
     return false;
   }
 };
@@ -53,7 +55,7 @@ export const checkCORSIssues = async (): Promise<boolean> => {
     });
     return response.ok;
   } catch (error) {
-    console.warn('⚠️ CORS check failed:', error);
+    logger.warn('CORS check failed:', error);
     return false;
   }
 };
@@ -74,7 +76,7 @@ export const exponentialBackoff = async <T>(
       
       if (attempt < maxRetries) {
         const delay = baseDelay * Math.pow(2, attempt - 1);
-        console.log(`🔄 Retry attempt ${attempt}/${maxRetries} failed, retrying in ${delay}ms...`);
+        logger.debug(`Retry attempt ${attempt}/${maxRetries} failed, retrying in ${delay}ms...`);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
@@ -92,10 +94,10 @@ export const isOfflineMode = (): boolean => {
 export const toggleOfflineMode = (enabled: boolean): void => {
   if (enabled) {
     localStorage.setItem('offline_mode', 'true');
-    console.log('🔌 Offline mode enabled');
+    logger.debug('Offline mode enabled');
   } else {
     localStorage.removeItem('offline_mode');
-    console.log('🌐 Offline mode disabled');
+    logger.debug('Offline mode disabled');
   }
 };
 

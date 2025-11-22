@@ -4,6 +4,7 @@ import { useData } from '../../contexts/DataContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSettings } from '../../contexts/SettingsContext';
 import { formatCurrency } from '../../utils/calculations';
+import { logger } from '../../utils/logger';
 
 const ReportsAnalytics: React.FC = () => {
   const { salaries, overtimes, leaves } = useData();
@@ -99,7 +100,7 @@ const ReportsAnalytics: React.FC = () => {
   })();
 
   const exportReport = (type: string) => {
-    console.log(`Exporting ${type} report for ${selectedYear}`);
+    logger.debug(`Exporting ${type} report for ${selectedYear}`);
     // In a real app, this would generate and download a file
     alert(`${type} raporu Excel formatında indiriliyor...`);
   };

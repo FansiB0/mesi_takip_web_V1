@@ -1,4 +1,5 @@
 import { supabase } from '../config/supabase';
+import { logger } from '../utils/logger';
 
 // Kullanıcı ayarları veri tipi
 export interface UserSettings {
@@ -121,7 +122,7 @@ export const settingsService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error creating settings:', error);
+      logger.error('Error creating settings:', error);
       return false;
     }
   },
@@ -137,7 +138,7 @@ export const settingsService = {
 
       if (error) {
         if (error.code === 'PGRST116') return null; // Kayıt bulunamadı
-        console.warn('Settings RLS error, trying without auth:', error);
+        logger.warn('Settings RLS error, trying without auth:', error);
         
         // RLS hatası varsa, auth olmadan dene
         const { data: fallbackData, error: fallbackError } = await supabase
@@ -167,7 +168,7 @@ export const settingsService = {
 
       return null;
     } catch (error) {
-      console.error('Error getting settings:', error);
+      logger.error('Error getting settings:', error);
       return null;
     }
   },
@@ -200,7 +201,7 @@ export const settingsService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error updating settings:', error);
+      logger.error('Error updating settings:', error);
       return false;
     }
   },
@@ -216,7 +217,7 @@ export const settingsService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error deleting settings:', error);
+      logger.error('Error deleting settings:', error);
       return false;
     }
   },
@@ -232,7 +233,7 @@ export const settingsService = {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Error getting all settings:', error);
+      logger.error('Error getting all settings:', error);
       return [];
     }
   }

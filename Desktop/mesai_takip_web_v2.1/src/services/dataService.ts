@@ -1,4 +1,5 @@
 import { supabase } from '../config/supabase';
+import { logger } from '../utils/logger';
 
 // Types dosyasından import et
 import { Salary, Overtime, Leave, Employee } from '../types';
@@ -16,7 +17,7 @@ export const employeeService = {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.warn('RLS error, trying without auth:', error);
+        logger.warn('RLS error, trying without auth:', error);
         // RLS hatası varsa, auth olmadan dene
         const { data: fallbackData, error: fallbackError } = await supabase
           .from('users')
@@ -30,7 +31,7 @@ export const employeeService = {
       
       return data || [];
     } catch (error) {
-      console.error('Error getting employees:', error);
+      logger.error('Error getting employees:', error);
       return [];
     }
   },
@@ -55,7 +56,7 @@ export const employeeService = {
       if (error) throw error;
       return data?.id || null;
     } catch (error) {
-      console.error('Error adding employee:', error);
+      logger.error('Error adding employee:', error);
       return null;
     }
   },
@@ -76,7 +77,7 @@ export const employeeService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error updating employee:', error);
+      logger.error('Error updating employee:', error);
       return false;
     }
   },
@@ -92,7 +93,7 @@ export const employeeService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error deleting employee:', error);
+      logger.error('Error deleting employee:', error);
       return false;
     }
   }
@@ -124,7 +125,7 @@ export const overtimeService = {
         updated_at: item.updated_at
       }));
     } catch (error) {
-      console.error('Error getting overtimes:', error);
+      logger.error('Error getting overtimes:', error);
       return [];
     }
   },
@@ -149,7 +150,7 @@ export const overtimeService = {
       if (error) throw error;
       return data?.id || null;
     } catch (error) {
-      console.error('Error adding overtime:', error);
+      logger.error('Error adding overtime:', error);
       return null;
     }
   },
@@ -168,7 +169,7 @@ export const overtimeService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error updating overtime:', error);
+      logger.error('Error updating overtime:', error);
       return false;
     }
   },
@@ -182,10 +183,10 @@ export const overtimeService = {
         .eq('id', id);
 
       if (error) throw error;
-      console.log('✅ Overtime deleted from Supabase:', id);
+      logger.info('Overtime deleted from Supabase:', id);
       return true;
     } catch (error) {
-      console.error('Error deleting overtime:', error);
+      logger.error('Error deleting overtime:', error);
       return false;
     }
   }
@@ -218,7 +219,7 @@ export const leaveService = {
         updated_at: item.updated_at
       }));
     } catch (error) {
-      console.error('Error getting leaves:', error);
+      logger.error('Error getting leaves:', error);
       return [];
     }
   },
@@ -244,7 +245,7 @@ export const leaveService = {
       if (error) throw error;
       return data?.id || null;
     } catch (error) {
-      console.error('Error adding leave:', error);
+      logger.error('Error adding leave:', error);
       return null;
     }
   },
@@ -263,7 +264,7 @@ export const leaveService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error updating leave:', error);
+      logger.error('Error updating leave:', error);
       return false;
     }
   },
@@ -277,10 +278,10 @@ export const leaveService = {
         .eq('id', id);
 
       if (error) throw error;
-      console.log('✅ Leave deleted from Supabase:', id);
+      logger.info('Leave deleted from Supabase:', id);
       return true;
     } catch (error) {
-      console.error('Error deleting leave:', error);
+      logger.error('Error deleting leave:', error);
       return false;
     }
   }
@@ -314,7 +315,7 @@ export const salaryService = {
         updated_at: item.updated_at
       }));
     } catch (error) {
-      console.error('Error getting salaries:', error);
+      logger.error('Error getting salaries:', error);
       return [];
     }
   },
@@ -341,7 +342,7 @@ export const salaryService = {
       if (error) throw error;
       return data?.id || null;
     } catch (error) {
-      console.error('Error adding salary:', error);
+      logger.error('Error adding salary:', error);
       return null;
     }
   },
@@ -368,7 +369,7 @@ export const salaryService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error updating salary:', error);
+      logger.error('Error updating salary:', error);
       return false;
     }
   },
@@ -384,7 +385,7 @@ export const salaryService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error deleting salary:', error);
+      logger.error('Error deleting salary:', error);
       return false;
     }
   }

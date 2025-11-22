@@ -4,16 +4,22 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AuthProvider, useAuth } from '../../contexts/AuthContext'
 import { ReactNode } from 'react'
 
-// Mock the auth service at the top level with factory function
+// Mock the auth service at the top level
 vi.mock('../../services/supabaseAuthService', () => ({
+  default: {
+    loginUser: vi.fn(),
+    registerUser: vi.fn(),
+    logoutUser: vi.fn(),
+    getCurrentUser: vi.fn(),
+  },
   loginUser: vi.fn(),
   registerUser: vi.fn(),
   logoutUser: vi.fn(),
   getCurrentUser: vi.fn(),
 }))
 
-// Get the mocked functions after the mock is defined
-const { loginUser: mockLoginUser, registerUser: mockRegisterUser, logoutUser: mockLogoutUser, getCurrentUser: mockGetCurrentUser } = await vi.importMock<typeof import('../../services/supabaseAuthService')>()
+// Import the mocked service
+import { loginUser as mockLoginUser, registerUser as mockRegisterUser, logoutUser as mockLogoutUser, getCurrentUser as mockGetCurrentUser } from '../../services/supabaseAuthService'
 
 // Test component to use the auth context
 const TestComponent = () => {

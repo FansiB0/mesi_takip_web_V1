@@ -200,7 +200,7 @@ export const logErrorWithContext = (error: any, context?: string) => {
   // In production, send to error tracking service
   if (!import.meta.env.DEV) {
     // Integration with error tracking service would go here
-    console.log('Error would be sent to tracking service:', errorInfo);
+    logger.debug('Error would be sent to tracking service:', errorInfo);
   }
 };
 

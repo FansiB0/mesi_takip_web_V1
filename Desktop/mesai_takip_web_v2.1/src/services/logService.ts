@@ -1,4 +1,5 @@
 import { supabase } from '../config/supabase';
+import { logger } from '../utils/logger';
 
 // Log seviyeleri
 export type LogLevel = 'info' | 'warning' | 'error' | 'success' | 'debug';
@@ -92,7 +93,7 @@ export const logService = {
 
       return true;
     } catch (error: any) {
-      console.error('❌ Error creating log:', error);
+      logger.error('Error creating log:', error);
       
       // Supabase başarısız olursa local storage'a kaydet
       try {
@@ -104,7 +105,7 @@ export const logService = {
         this.saveToLocalStorage(fallbackLogEntry);
         return true;
       } catch (localError) {
-        console.error('❌ Failed to save log to local storage:', localError);
+        logger.error('Failed to save log to local storage:', localError);
         return false;
       }
     }
@@ -254,7 +255,7 @@ export const logService = {
       if (error) throw error;
       return data || [];
     } catch (error: any) {
-      console.error('❌ Error getting logs:', error);
+      logger.error('Error getting logs:', error);
       
       // Supabase başarısız olursa local storage'dan getir
       return this.getLogsFromLocalStorage(limitCount);
@@ -305,7 +306,7 @@ export const logService = {
       if (error) throw error;
       return data || [];
     } catch (error: any) {
-      console.error('❌ Error getting filtered logs:', error);
+      logger.error('Error getting filtered logs:', error);
       return [];
     }
   },
@@ -323,7 +324,7 @@ export const logService = {
       
       localStorage.setItem('system_logs', JSON.stringify(logs));
     } catch (error) {
-      console.error('❌ Error saving to local storage:', error);
+      logger.error('Error saving to local storage:', error);
     }
   },
 
@@ -336,7 +337,7 @@ export const logService = {
       const logs: LogEntry[] = JSON.parse(logsData);
       return logs.slice(0, limit);
     } catch (error) {
-      console.error('❌ Error getting logs from local storage:', error);
+      logger.error('Error getting logs from local storage:', error);
       return [];
     }
   },
@@ -355,7 +356,7 @@ export const logService = {
       if (error) throw error;
       return true;
     } catch (error: any) {
-      console.error('❌ Error clearing logs:', error);
+      logger.error('Error clearing logs:', error);
       return false;
     }
   },
@@ -431,7 +432,7 @@ export const logService = {
 
       return stats;
     } catch (error: any) {
-      console.error('❌ Error getting log stats:', error);
+      logger.error('Error getting log stats:', error);
       return {
         total: 0,
         byLevel: {

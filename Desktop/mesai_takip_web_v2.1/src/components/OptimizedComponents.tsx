@@ -1,6 +1,7 @@
 // Performance-optimized components with React.memo and lazy loading
 
 import React, { memo, useMemo, useCallback, lazy, Suspense } from 'react';
+import { logger } from '../utils/logger';
 
 // Lazy loaded heavy components
 const Dashboard = lazy(() => import('./Dashboard/Dashboard'));
@@ -78,7 +79,7 @@ export const usePerformanceMonitor = (componentName: string) => {
     const renderTime = endTime - startTime;
     
     if (import.meta.env.DEV && renderTime > 100) {
-      console.warn(`${componentName} took ${renderTime.toFixed(2)}ms to render`);
+      logger.warn(`${componentName} took ${renderTime.toFixed(2)}ms to render`);
     }
   });
 };

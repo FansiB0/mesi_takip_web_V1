@@ -1,4 +1,5 @@
 import { supabase } from '../config/supabase';
+import { logger } from '../utils/logger';
 
 // Güvenlik ayarları veri tipi
 export interface SecuritySettings {
@@ -53,7 +54,7 @@ export const securityService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error creating security settings:', error);
+      logger.error('Error creating security settings:', error);
       return false;
     }
   },
@@ -74,7 +75,7 @@ export const securityService = {
 
       return data;
     } catch (error) {
-      console.error('Error getting security settings:', error);
+      logger.error('Error getting security settings:', error);
       return null;
     }
   },
@@ -93,7 +94,7 @@ export const securityService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      console.error('Error updating security settings:', error);
+      logger.error('Error updating security settings:', error);
       return false;
     }
   },
@@ -104,7 +105,7 @@ export const securityService = {
       const settings = await this.getSecuritySettings(userId);
       return settings?.twoFactorEnabled || false;
     } catch (error) {
-      console.error('Error checking 2FA status:', error);
+      logger.error('Error checking 2FA status:', error);
       return false;
     }
   },
@@ -118,12 +119,12 @@ export const securityService = {
       });
 
       if (success) {
-        console.log(`✅ 2FA enabled with method: ${method}`);
+        logger.info(`2FA enabled with method: ${method}`);
       }
 
       return success;
     } catch (error) {
-      console.error('Error enabling 2FA:', error);
+      logger.error('Error enabling 2FA:', error);
       return false;
     }
   },
@@ -136,12 +137,12 @@ export const securityService = {
       });
 
       if (success) {
-        console.log('✅ 2FA disabled');
+        logger.info('2FA disabled');
       }
 
       return success;
     } catch (error) {
-      console.error('Error disabling 2FA:', error);
+      logger.error('Error disabling 2FA:', error);
       return false;
     }
   },
@@ -178,7 +179,7 @@ export const securityService = {
       const success = await this.updateSecuritySettings(userId, updates);
       return success;
     } catch (error) {
-      console.error('Error recording failed login:', error);
+      logger.error('Error recording failed login:', error);
       return false;
     }
   },
@@ -193,12 +194,12 @@ export const securityService = {
       });
 
       if (success) {
-        console.log('✅ Successful login recorded');
+        logger.info('Successful login recorded');
       }
 
       return success;
     } catch (error) {
-      console.error('Error recording successful login:', error);
+      logger.error('Error recording successful login:', error);
       return false;
     }
   },
@@ -229,7 +230,7 @@ export const securityService = {
 
       return true;
     } catch (error) {
-      console.error('Error checking account lock status:', error);
+      logger.error('Error checking account lock status:', error);
       return false;
     }
   },
@@ -243,12 +244,12 @@ export const securityService = {
       });
 
       if (success) {
-        console.log('✅ Password change recorded');
+        logger.info('Password change recorded');
       }
 
       return success;
     } catch (error) {
-      console.error('Error recording password change:', error);
+      logger.error('Error recording password change:', error);
       return false;
     }
   },
@@ -259,7 +260,7 @@ export const securityService = {
       const settings = await this.getSecuritySettings(userId);
       return settings?.passwordChangeRequired || false;
     } catch (error) {
-      console.error('Error checking password change requirement:', error);
+      logger.error('Error checking password change requirement:', error);
       return false;
     }
   },
@@ -272,12 +273,12 @@ export const securityService = {
       });
 
       if (success) {
-        console.log('✅ Password change required');
+        logger.info('Password change required');
       }
 
       return success;
     } catch (error) {
-      console.error('Error requiring password change:', error);
+      logger.error('Error requiring password change:', error);
       return false;
     }
   }
